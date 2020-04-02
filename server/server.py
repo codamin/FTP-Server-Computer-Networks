@@ -23,8 +23,6 @@ class ClientThread(Thread):
                 socket.sendall(data)
 
 
-
-
 class Server:
     def init_users(self, users):
         self.users = []
