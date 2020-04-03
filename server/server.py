@@ -6,24 +6,31 @@ from defs import *
 from user import User
 
 def read_configs():
-    configs = open('./config.json').read()
+    configs = open(CONFIG_PATH).read()
     configs_dict = json.loads(configs)
     return configs_dict
 
 class ClientThread(Thread):
     def __init__(self, client_address, client_socket):
         Thread.__init__(self)
-        self.socket = client_socket
+        self.sock = client_socket
     def run(self):
-        with socket:
-            while True:
-                data = socket.recv(1024)
-                if not(data):
-                    break
-                socket.sendall(data)
+        while True:
+            data = self.sock.recv(20)
+            print(data)
+            if not(data):
+                break
+            self.sock.sendall(data)
 
 
 class Server:
+
+    def __init__(self, configs):
+        self.command_port = configs['commandChannelPort']
+        self.data_port = configs['dataChannelPort']
+        self.init_users(configs['users'])
+        self.init_accounting(configs['accounting'])
+
     def init_users(self, users):
         self.users = []
         for user in users:
@@ -45,14 +52,8 @@ class Server:
             user.print()
             print('#############')
     
-    def configure(self, config):
-        self.command_port = configs['commandChannelPort']
-        self.data_port = configs['dataChannelPort']
-        self.init_users(configs['users'])
-        self.init_accounting(configs['accounting'])      
   
-    def run(self, configs):
-        self.configure(configs)
+    def run(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as listen_socket:
             listen_socket.bind((HOST_IP, self.command_port))
             listen_socket.listen()
@@ -62,7 +63,6 @@ class Server:
                 newThread.start()
 
 
-# print(server.command_port, server.data_port)
 configs = read_configs()
-server = Server()
-server.run(configs)
+server = Server(configs)
+server.run()
