@@ -1,13 +1,13 @@
 class User:
-    def __init__(self, id, password, size = None, email = None, alert = None):
-        self.id = id
+    def __init__(self, user_name, password, size = None, email = None, alert = None):
+        self.user_name = user_name
         self.password = password
         self.size = size
         self.email = email
         self.alert = alert
     
     def print(self):
-        print('id = ', self.id)
+        print('user_name = ', self.user_name)
         print('password = ', self.password)
         if not self.size is None:
             print('size = ', self.size)
