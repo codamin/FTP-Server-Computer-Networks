@@ -1,10 +1,13 @@
 import socket
 import random
 import json
-from defs import *
+import time
+import sys
+import os
+from termcolor import colored
 
-id = 'hoenza'
-password = '8585'
+sys.path.append(os.path.abspath('../'))
+from defs import *
 
 def read_configs():
     configs = open(CONFIG_PATH).read()
@@ -12,22 +15,52 @@ def read_configs():
     return configs_dict
     
 
-class Client:
-    def configure(self):
-        self.id = id
-        self.password = password
-        # self.command_port = random.randint(2000, 10000)
-        # self.data_port = command_port + 1
-        
-    def run(self, configs):
-        self.configure()
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.connect((HOST_IP, configs['commandChannelPort']))
-            s.sendall(b'I am client 2')
-            data = s.recv(1024)
-            print(data)
-            
+class Client:        
+    def connectToServer(self):
+        self.command_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.command_sock.connect((HOST_IP, commandChannelPort))
 
-configs = read_configs()
-client = Client()
-client.run(configs)
+    def send(self, msg):
+        self.command_sock.sendall(msg.encode('utf-8'))
+
+    def recv(self):
+        print(colored(self.command_sock.recv(RECV_SIZE).decode('utf-8'), 'red'))
+
+    def User(self, user_name):
+        self.send('USER {}'.format(user_name))
+        self.recv()
+
+    def Pass(self, password):
+        self.send('PASS {}'.format(password))
+        self.recv()
+
+    def Pwd(self):
+        self.send('PWD')
+        self.recv()
+    
+    def Mkd(self, name):
+        self.send('MKD {}'.format(name))
+        # self.recv()
+        
+if __name__ == "__main__":
+    # READ CONFIGS
+    configs = read_configs()
+    commandChannelPort = configs['commandChannelPort']
+
+    #CREATE CLIENT
+    client = Client()
+    client.connectToServer()
+    client.User('hoenza')
+    client.Pass('8585')
+    
+    # COMMANDS
+    while(True):
+        command = input('ENTER COMMAND: ').split(' ')
+        if command[0].lower() == 'user':
+            client.User(command[1])
+        if command[0].lower() == 'pass':
+            client.Pass(command[1])
+        if command[0].lower() == 'pwd':
+            client.Pwd()
+        if command[0].lower() == 'mkd':
+            client.Mkd(command[1])

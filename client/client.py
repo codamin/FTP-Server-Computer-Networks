@@ -37,6 +37,10 @@ class Client:
     def Pwd(self):
         self.send('PWD')
         self.recv()
+    
+    def Mkd(self, name):
+        self.send('MKD {}'.format(name))
+        # self.recv()
         
 if __name__ == "__main__":
     # READ CONFIGS
@@ -46,15 +50,17 @@ if __name__ == "__main__":
     #CREATE CLIENT
     client = Client()
     client.connectToServer()
-    client.User('hoenza')
-    client.Pass('8585')
-    client.Pwd()
-    #COMMANDS
-    # while(True):
-    #     command = input('ENTER COMMAND: ').split(' ')
-    #     if command[0].lower() == 'user':
-    #         client.User(command[1])
-    #     if command[0].lower() == 'pass':
-    #         client.Pass(command[1])
-    #     if command[0].lower() == 'pwd':
-    #         client.Pwd()
+    client.User('amin')
+    client.Pass('329')
+    
+    # COMMANDS
+    while(True):
+        command = input('ENTER COMMAND: ').split(' ')
+        if command[0].lower() == 'user':
+            client.User(command[1])
+        if command[0].lower() == 'pass':
+            client.Pass(command[1])
+        if command[0].lower() == 'pwd':
+            client.Pwd()
+        if command[0].lower() == 'mkd':
+            client.Mkd(command[1])
