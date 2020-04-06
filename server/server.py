@@ -4,6 +4,7 @@ import os
 import sys
 from user import User
 from threading import Thread, currentThread
+import threading
 
 sys.path.append(os.path.abspath('../'))
 from defs import *
@@ -23,32 +24,48 @@ class ClientThread(Thread):
         self.sock.sendall(msg.encode('utf-8'))
 
     def run(self):
-        global server
         while True:
             data = self.sock.recv(1024).decode('utf-8')
             if not data:
                 break
             try:
-                command, param = data.split(' ')
+                command = data.split(' ')[0]
+                param = data.split(' ')[1:]
+
             except:
                 pass
+
+            print(data, command, param)
             self.handle_commands(command, param)
 
     def handle_commands(self, command, param):
+        global server
         if command == 'USER':
-            self.session_user = server.get_user(param)
+            self.session_user = server.get_user(param[0])
             if self.session_user:
                 self.send(NAME_OKAY_MSG)
+            else:
+                self.send(LOG_IN_FALED_MSG)
+
 
         elif command == 'PASS':
-            print(param)
             if not self.session_user:
-                self.send(NAME_OKAY_MSG)
-            elif self.session_user.password != param:
+                self.send(BAD_SEQUENCE_MSG)
+            elif self.session_user.password != param[0]:
                 self.send(LOG_IN_FALED_MSG)
                 self.session_user = None
             else:
                 self.send(LOG_IN_OKAY_MSG)
+        
+        elif command == 'PWD':
+            self.send(self.session_user.dir)
+        
+        elif command == 'MKD':
+            if '-i' in param:
+                open(param.remove('-i')[0]).close()
+            else:
+                print(param)
+                os.makedirs(param[0])
 
 class Server:
 

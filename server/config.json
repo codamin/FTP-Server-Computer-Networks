@@ -1,6 +1,6 @@
 {
-  "commandChannelPort": 8000,
-  "dataChannelPort":8001,
+  "commandChannelPort": 8002,
+  "dataChannelPort":8003,
   "users": [
     {
       "user": "navid",
@@ -13,6 +13,10 @@
     {
       "user": "hoenza",
       "password": "8585"
+    },
+    {
+      "user": "amin",
+      "password": "329"
     }
   ],
   "accounting": {

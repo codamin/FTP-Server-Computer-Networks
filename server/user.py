@@ -5,6 +5,7 @@ class User:
         self.size = size
         self.email = email
         self.alert = alert
+        self.dir = './'
     
     def print(self):
         print('user_name = ', self.user_name)
