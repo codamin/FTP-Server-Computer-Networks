@@ -1,5 +1,6 @@
 CONFIG_PATH = './config.json'
 HOST_IP = '127.0.0.1'
+RECV_SIZE = 1024
 
 #SERVER RESPONSE MSGs
 NAME_OKAY_MSG = '331 User name okay, need password.'
