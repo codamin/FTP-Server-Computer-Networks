@@ -1,3 +1,5 @@
+import os
+
 class User:
     def __init__(self, user_name, password, size = None, email = None, alert = None):
         self.user_name = user_name
@@ -5,7 +7,7 @@ class User:
         self.size = size
         self.email = email
         self.alert = alert
-        self.dir = './'
+        self.dir = os.getcwd()
     
     def print(self):
         print('user_name = ', self.user_name)

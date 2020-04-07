@@ -18,54 +18,101 @@ class ClientThread(Thread):
     def __init__(self, client_address, client_socket):
         Thread.__init__(self)
         self.sock = client_socket
+        self.user_name = ""
         self.session_user = None
 
     def send(self, msg):
-        self.sock.sendall(msg.encode('utf-8'))
+        message = " ".join(msg)
+        print('response ', message)
+        self.sock.sendall(message.encode('utf-8'))
 
     def run(self):
         while True:
             data = self.sock.recv(1024).decode('utf-8')
+
             if not data:
                 break
-            try:
-                command = data.split(' ')[0]
-                param = data.split(' ')[1:]
 
-            except:
-                pass
+            command = ''
+            param = []
+            tmp = data.split(' ')
 
-            print(data, command, param)
+            if len(tmp) > 0:
+                command = tmp[0]
+            if len(tmp) > 1:
+                param = tmp[1:]
+
             self.handle_commands(command, param)
 
     def handle_commands(self, command, param):
         global server
+        print('handle calling', command, param)
         if command == 'USER':
-            self.session_user = server.get_user(param[0])
-            if self.session_user:
-                self.send(NAME_OKAY_MSG)
+            if len(param) < 1:
+                return
+            user = server.get_user(param[0])
+            if user:
+                self.user_name = user.user_name
+                self.send([NAME_OKAY_MSG])
             else:
-                self.send(LOG_IN_FALED_MSG)
-
-
+                self.send([LOG_IN_FALED_MSG])
+        
         elif command == 'PASS':
-            if not self.session_user:
-                self.send(BAD_SEQUENCE_MSG)
-            elif self.session_user.password != param[0]:
-                self.send(LOG_IN_FALED_MSG)
-                self.session_user = None
+            user = server.get_user(self.user_name)
+            if not self.user_name:
+                self.send([BAD_SEQUENCE_MSG])
+            elif user.password != param[0]:
+                self.send([LOG_IN_FALED_MSG])
             else:
-                self.send(LOG_IN_OKAY_MSG)
+                self.session_user = user
+                self.send([LOG_IN_OKAY_MSG])
         
         elif command == 'PWD':
-            self.send(self.session_user.dir)
+            self.send([PWD_OKAY, self.session_user.dir])
         
         elif command == 'MKD':
-            if '-i' in param:
-                open(param.remove('-i')[0]).close()
-            else:
-                print(param)
-                os.makedirs(param[0])
+            self.handle_mkd(param)
+        
+        elif command == 'RMD':
+            self.handle_rmd(param)
+
+        elif command == "CWD":
+            self.handle_cwd(param)
+
+    def handle_cwd(self, param):
+        if len(param) < 1:
+            self.session_user.dir = os.getcwd()
+        elif param[0] == '..':
+            head, tail = os.path.split(self.session_user.dir)
+            if head[-1] == '/':
+                head = head[:-1]
+            self.session_user.dir = head
+        else:
+            self.session_user.dir = os.path.join(session_user.dir, param[0])
+        self.send([CWD_OKAY_MSG])
+
+    def handle_rmd(self, param):
+        if len(param) < 1:
+            pass
+        elif '-f' in param:
+            param.remove('-f')
+            os.rmdir(os.path.join(self.session_user.dir, param[0]))
+            self.send([RMD_OKAY, os.path.join(self.session_user.dir, param[0]), RMD_PATH_DELETED])
+        else:
+            os.remove(os.path.join(self.session_user.dir, param[0]))
+            self.send([RMD_OKAY, os.path.join(self.session_user.dir, param[0]), RMD_PATH_DELETED])
+
+    def handle_mkd(self, param):
+        if len(param) < 1:
+            pass
+        elif '-i' in param:
+            param.remove('-i')
+            open(os.path.join(self.session_user.dir, param[0]), 'w+').close()
+            self.send([PWD_OKAY, os.path.join(self.session_user.dir, param[0]), MKD_PATH_CREATED])
+        else:
+            os.makedirs(os.path.join(self.session_user.dir, param[0]))
+            self.send([PWD_OKAY, os.path.join(self.session_user.dir, param[0]), MKD_PATH_CREATED])
+
 
 class Server:
 

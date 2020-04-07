@@ -7,9 +7,17 @@ NAME_OKAY_MSG = '331 User name okay, need password.'
 BAD_SEQUENCE_MSG = '503 Bad sequence of commands.'
 LOG_IN_OKAY_MSG = '230 User logged in, proceed.'
 LOG_IN_FALED_MSG = '430 Invalid username or password.'
+MKD_PATH_CREATED = 'path created.'
+RMD_PATH_DELETED = 'path deleted.'
+CWD_OKAY_MSG = "250 Successful Change."
 
 #RESPONSE CODES
 NAME_OKAY_CODE = '331'
 BAD_SEQUENCE_CODE = '503'
 LOG_IN_OKAY_CODE = '230'
 LOG_IN_FALED_CODE = '430'
+PWD_OKAY = '257'
+RMD_OKAY = '250'
+
+
+PATH = 'path'

@@ -55,12 +55,15 @@ if __name__ == "__main__":
     
     # COMMANDS
     while(True):
-        command = input('ENTER COMMAND: ').split(' ')
+        command1 = input('ENTER COMMAND: ')
+        command = command1.split()
         if command[0].lower() == 'user':
             client.User(command[1])
         if command[0].lower() == 'pass':
             client.Pass(command[1])
         if command[0].lower() == 'pwd':
             client.Pwd()
-        if command[0].lower() == 'mkd':
-            client.Mkd(command[1])
+        # if command[0].lower() == 'mkd':
+        else:
+            # client.Mkd(command[1])
+            client.send(command1)
