@@ -40,8 +40,33 @@ class Client:
     
     def Mkd(self, name):
         self.send('MKD {}'.format(name))
-        # self.recv()
-        
+        self.recv()
+    
+    def Mkdi(self, name):
+        print('sendin MKD -i {}'.format(name))
+        self.send('MKD -i {}'.format(name))
+        self.recv()
+    
+    def Rmd(self, name):
+        self.send('RMD {}'.format(name))
+        self.recv()
+    
+    def Rmdf(self, name):
+        self.send('RMD -f {}'.format(name))
+        self.recv()
+    
+    def List(self):
+        self.send('LIST')
+        self.recv()
+
+    def Cwd(self, path):
+        self.send('CWD {}'.format(path))
+        self.recv()
+
+    
+
+
+
 if __name__ == "__main__":
     # READ CONFIGS
     configs = read_configs()
@@ -59,11 +84,32 @@ if __name__ == "__main__":
         command = command1.split()
         if command[0].lower() == 'user':
             client.User(command[1])
-        if command[0].lower() == 'pass':
+        elif command[0].lower() == 'pass':
             client.Pass(command[1])
-        if command[0].lower() == 'pwd':
+        elif command[0].lower() == 'pwd':
             client.Pwd()
-        # if command[0].lower() == 'mkd':
+        elif command[0].lower() == 'mkd':
+            if len(command) == 3:
+                if command[1] != '-i':
+                    client.Mkdi(command[1])
+                else:
+                    client.Mkdi(command[2])
+            else:
+                client.Mkd(command[1])
+        elif command[0].lower() == 'rmd':
+            if len(command) == 3:
+                if command[1] != '-f':
+                    client.Rmdf(command[1])
+                else:
+                    client.Rmdf(command[2])
+            else:
+                client.Rmd(command[1])
+        elif command[0].lower() == 'list':
+            client.List()
+        elif command[0].loser() == 'cwd':
+            client.Cwd(command[1])
+
+
         else:
             # client.Mkd(command[1])
             client.send(command1)
