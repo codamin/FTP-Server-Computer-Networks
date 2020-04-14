@@ -1,0 +1,11 @@
+2020-04-14 14:21:50.460796  ---  /home/ho/cn/ftp-server/server/file1 file create
+2020-04-14 14:21:54.208956  ---  /home/ho/cn/ftp-server/server/file2 file create
+2020-04-14 14:21:59.355087  ---  /home/ho/cn/ftp-server/server/file3 file create
+2020-04-14 14:22:17.029517  ---  /home/ho/cn/ftp-server/file1 file create
+2020-04-14 14:22:26.412302  ---  /home/ho/cn/ftp-server/fold1 folder create
+2020-04-14 14:22:29.432699  ---  /home/ho/cn/ftp-server/fold2 folder create
+2020-04-14 14:22:37.301524  ---  /home/ho/cn/ftp-server/file2 file create
+2020-04-14 14:23:19.180703  ---  /home/ho/cn/ftp-server/fold2 folder remove
+2020-04-14 14:23:26.291401  ---  /home/ho/cn/ftp-server/fold1 folder remove
+2020-04-14 14:23:31.324570  ---  /home/ho/cn/ftp-server/file1 file remove
+2020-04-14 14:23:34.258442  ---  /home/ho/cn/ftp-server/file2 file remove

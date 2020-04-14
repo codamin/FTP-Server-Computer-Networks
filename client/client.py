@@ -26,8 +26,12 @@ class Client:
         self.command_sock.sendall(msg.encode('utf-8'))
 
     def recv(self):
-        print(colored(self.command_sock.recv(RECV_SIZE).decode('utf-8'), 'red'))
-    
+        resp = self.command_sock.recv(RECV_SIZE).decode('utf-8')
+        print(colored(resp, 'red'))
+        if resp.startswith(OPEN_CONN_FAIL):
+            return False
+        return True
+        
     def recv_file(self, fileName):
         if os.path.isfile(os.path.join('./', fileName)):
             os.remove(os.path.join('./', fileName))
@@ -79,8 +83,9 @@ class Client:
 
     def Dl(self, file):
         self.send('DL {}'.format(file))
-        self.recv_file(file)
-        self.recv()
+        res = self.recv()
+        if res:
+            self.recv_file(file)
     
     def Help(self):
         self.send('HELP')
@@ -144,7 +149,7 @@ if __name__ == "__main__":
             client.Help()
         elif command[0].lower() == 'quit':
             client.Quit()
-            
+
 
         else:
             # client.Mkd(command[1])

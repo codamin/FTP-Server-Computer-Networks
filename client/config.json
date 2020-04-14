@@ -1,6 +1,6 @@
 {
-  "commandChannelPort": 8002,
-  "dataChannelPort":8001,
+  "commandChannelPort": 8003,
+  "dataChannelPort":8000,
   "users": [
     {
       "user": "navid",
@@ -20,13 +20,13 @@
     "threshold": 100,
     "users": [
       {
-        "user": "navid",
+        "user": "amin",
         "size": "12000",
         "email": "navid@akbari.com",
         "alert": true
       },
       {
-        "user": "farzad",
+        "user": "hoenza",
         "size": "150000000",
         "email": "farzad@ahabibi.com",
         "alert": false

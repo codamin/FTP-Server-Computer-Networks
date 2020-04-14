@@ -6,6 +6,7 @@ import sys
 from user import User
 from threading import Thread, currentThread
 import threading
+import datetime
 
 sys.path.append(os.path.abspath('../'))
 from defs import *
@@ -70,6 +71,7 @@ class ClientThread(Thread):
                 self.send([LOG_IN_FALED_MSG])
             else:
                 self.session_user = user
+                self.handle_log(self.session_user.user_name + "log in")
                 self.send([LOG_IN_OKAY_MSG])
         
         elif command == 'PWD':
@@ -96,8 +98,16 @@ class ClientThread(Thread):
         elif command == 'QUIT':
             self.handle_quit()
 
+    def handle_log(self, msg):
+        if server.logging_enable:
+            file = open(server.logging_path, 'a')
+            msg = str(datetime.datetime.today()) + '  ---  ' + msg + '\n'
+            file.write(msg)
+            file.close()
+
     def handle_quit(self):
         self.send([QUIT_OKAY, QUIT_OKAY_MSG])
+        self.handle_log(self.session_user.user_name + "quit")
         sys.exit()
      
     def handle_help(self):
@@ -107,15 +117,17 @@ class ClientThread(Thread):
     def handle_dl(self, param):
         path = os.path.join(self.session_user.dir, param[0])
         if not os.path.isfile(path):
-            self.send('file is not present')
+            self.send(['file is not present'])
             return
-        
-        file = open(os.path.join(self.session_user.dir, param[0]), 'r')
+        file = open(path, 'r')
         info = file.read()
-        print(info)
-        print(":))")
-        self.send_file(info)
-        self.send([LIST_OKAY, DL_OKAY_MSG])
+        if len(info) > self.session_user.size:
+            self.send([OPEN_CONN_FAIL, OPEN_CONN_MSG])
+        else:
+            self.handle_log(path + "file download")
+            self.session_user.size -= len(info)
+            self.send([LIST_OKAY, DL_OKAY_MSG])
+            self.send_file(info)
 
     def handle_cwd(self, param):
         if len(param) == 0:
@@ -136,26 +148,35 @@ class ClientThread(Thread):
         self.send([LIST_OKAY, LIST_DONE])
 
     def handle_rmd(self, param):
+        path = os.path.join(self.session_user.dir, param[0])
+
         if len(param) < 1:
             pass
         elif '-f' in param:
             param.remove('-f')
-            os.rmdir(os.path.join(self.session_user.dir, param[0]))
-            self.send([RMD_OKAY, os.path.join(self.session_user.dir, param[0]), RMD_PATH_DELETED])
+            path = os.path.join(self.session_user.dir, param[0])
+            os.rmdir(path)
+            self.handle_log(path + " folder remove")
+            self.send([RMD_OKAY, path, RMD_PATH_DELETED])
         else:
-            os.remove(os.path.join(self.session_user.dir, param[0]))
-            self.send([RMD_OKAY, os.path.join(self.session_user.dir, param[0]), RMD_PATH_DELETED])
+            os.remove(path)
+            self.handle_log(path + " file remove")
+            self.send([RMD_OKAY, path, RMD_PATH_DELETED])
 
     def handle_mkd(self, param):
+        path = os.path.join(self.session_user.dir, param[0])
         if len(param) < 1:
             pass
         elif '-i' in param:
             param.remove('-i')
-            open(os.path.join(self.session_user.dir, param[0]), 'w+').close()
-            self.send([PWD_OKAY, os.path.join(self.session_user.dir, param[0]), MKD_PATH_CREATED])
+            path = os.path.join(self.session_user.dir, param[0])
+            self.handle_log(path + " file create")
+            open(path, 'w+').close()
+            self.send([PWD_OKAY, path, MKD_PATH_CREATED])
         else:
-            os.makedirs(os.path.join(self.session_user.dir, param[0]))
-            self.send([PWD_OKAY, os.path.join(self.session_user.dir, param[0]), MKD_PATH_CREATED])
+            self.handle_log(path + " folder create")
+            os.makedirs(path)
+            self.send([PWD_OKAY, path, MKD_PATH_CREATED])
 
 
 class Server:
@@ -165,6 +186,7 @@ class Server:
         self.data_port = configs['dataChannelPort']
         self.init_users(configs['users'])
         self.init_accounting(configs['accounting'])
+        self.init_logging(configs['logging'])
 
     def init_users(self, users):
         self.users = []
@@ -182,6 +204,10 @@ class Server:
                     user.email = accounting_user['email']
                     user.alert = accounting_user['alert']
     
+    def init_logging(self, logging):
+        self.logging_enable = logging['enable']
+        self.logging_path = logging['path']
+
     def print_users(self):
         for user in self.users:
             user.print()

@@ -2,6 +2,7 @@ CONFIG_PATH = './config.json'
 HOST_IP = '127.0.0.1'
 RECV_SIZE = 1024
 
+
 #SERVER RESPONSE MSGs
 NAME_OKAY_MSG = '331 User name okay, need password.'
 BAD_SEQUENCE_MSG = '503 Bad sequence of commands.'
@@ -13,6 +14,7 @@ LIST_DONE = 'List transfer done.'
 CWD_OKAY_MSG = "250 Successful Change."
 DL_OKAY_MSG = "Successful Download."
 QUIT_OKAY_MSG = "Successful Quit."
+OPEN_CONN_MSG = "Can't open data connection."
 
 
 #RESPONSE CODES
@@ -25,6 +27,7 @@ RMD_OKAY = '250'
 LIST_OKAY = '226'
 HELP_OKAY = '214'
 QUIT_OKAY = '221'
+OPEN_CONN_FAIL = '425'
 
 
 PATH = 'path'

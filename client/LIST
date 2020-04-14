@@ -1,5 +1,11 @@
-server.py
-config.json
-user.py
+fold2
+file1
+file2
+server
+client
+defs.py
 __pycache__
-tmp.py
+CN-CA1.pdf
+.git
+fold1
+.gitignore
