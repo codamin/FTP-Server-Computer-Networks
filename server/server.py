@@ -1,5 +1,6 @@
 import json
 import socket
+import select
 import os
 import sys
 from user import User
@@ -15,20 +16,24 @@ def read_configs():
     return configs_dict
 
 class ClientThread(Thread):
-    def __init__(self, client_address, client_socket):
+    def __init__(self, socket_command, socket_data):
         Thread.__init__(self)
-        self.sock = client_socket
+        self.socket_command = socket_command
+        self.socket_data = socket_data
         self.user_name = ""
         self.session_user = None
 
     def send(self, msg):
         message = " ".join(msg)
         print('response ', message)
-        self.sock.sendall(message.encode('utf-8'))
+        self.socket_command.sendall(message.encode('utf-8'))
+
+    def send_file(self, msg):
+        self.socket_data.sendall(msg.encode('utf-8'))
 
     def run(self):
         while True:
-            data = self.sock.recv(1024).decode('utf-8')
+            data = self.socket_command.recv(1024).decode('utf-8')
 
             if not data:
                 break
@@ -76,11 +81,44 @@ class ClientThread(Thread):
         elif command == 'RMD':
             self.handle_rmd(param)
 
-        elif command == "CWD":
+        elif command == 'LIST':
+            self.handle_list()
+
+        elif command == 'CWD':
             self.handle_cwd(param)
 
+        elif command == 'DL':
+            self.handle_dl(param)
+        
+        elif command == 'HELP':
+            self.handle_help()
+        
+        elif command == 'QUIT':
+            self.handle_quit()
+
+    def handle_quit(self):
+        self.send([QUIT_OKAY, QUIT_OKAY_MSG])
+        sys.exit()
+     
+    def handle_help(self):
+        resp = "\nUSER [name], It's argument is used to specify the user's string. It is used for user authentication.\n"
+        self.send([HELP_OKAY, resp])
+    
+    def handle_dl(self, param):
+        path = os.path.join(self.session_user.dir, param[0])
+        if not os.path.isfile(path):
+            self.send('file is not present')
+            return
+        
+        file = open(os.path.join(self.session_user.dir, param[0]), 'r')
+        info = file.read()
+        print(info)
+        print(":))")
+        self.send_file(info)
+        self.send([LIST_OKAY, DL_OKAY_MSG])
+
     def handle_cwd(self, param):
-        if len(param) < 1:
+        if len(param) == 0:
             self.session_user.dir = os.getcwd()
         elif param[0] == '..':
             head, tail = os.path.split(self.session_user.dir)
@@ -88,8 +126,14 @@ class ClientThread(Thread):
                 head = head[:-1]
             self.session_user.dir = head
         else:
-            self.session_user.dir = os.path.join(session_user.dir, param[0])
+            self.session_user.dir = os.path.join(self.session_user.dir, param[0])
         self.send([CWD_OKAY_MSG])
+
+    def handle_list(self):
+        dir_list = os.listdir(self.session_user.dir)
+        dir_str = '\n'.join(dir_list)
+        self.send_file(dir_str)
+        self.send([LIST_OKAY, LIST_DONE])
 
     def handle_rmd(self, param):
         if len(param) < 1:
@@ -144,13 +188,21 @@ class Server:
             print('#############')
     
     def run(self):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as listen_socket:
-            listen_socket.bind((HOST_IP, self.command_port))
-            listen_socket.listen()
-            while True:
-                client_socket, client_address = listen_socket.accept()
-                newThread = ClientThread(client_address, client_socket)
-                newThread.start()
+        listen_command_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        listen_command_socket.bind((HOST_IP, self.command_port))
+        listen_command_socket.listen()
+
+        listen_data_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        listen_data_socket.bind((HOST_IP, self.data_port))
+        listen_data_socket.listen()
+
+        while True:
+            sock_command, addr1 = listen_command_socket.accept()
+            sock_data, addr2 = listen_data_socket.accept()
+            newThread = ClientThread(sock_command, sock_data)
+            newThread.start()
+
+
 
     def get_user(self, user_name):
         for user in self.users:

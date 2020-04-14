@@ -9,7 +9,11 @@ LOG_IN_OKAY_MSG = '230 User logged in, proceed.'
 LOG_IN_FALED_MSG = '430 Invalid username or password.'
 MKD_PATH_CREATED = 'path created.'
 RMD_PATH_DELETED = 'path deleted.'
+LIST_DONE = 'List transfer done.'
 CWD_OKAY_MSG = "250 Successful Change."
+DL_OKAY_MSG = "Successful Download."
+QUIT_OKAY_MSG = "Successful Quit."
+
 
 #RESPONSE CODES
 NAME_OKAY_CODE = '331'
@@ -18,6 +22,9 @@ LOG_IN_OKAY_CODE = '230'
 LOG_IN_FALED_CODE = '430'
 PWD_OKAY = '257'
 RMD_OKAY = '250'
+LIST_OKAY = '226'
+HELP_OKAY = '214'
+QUIT_OKAY = '221'
 
 
 PATH = 'path'

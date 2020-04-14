@@ -19,12 +19,24 @@ class Client:
     def connectToServer(self):
         self.command_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.command_sock.connect((HOST_IP, commandChannelPort))
+        self.data_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.data_sock.connect((HOST_IP, dataChannelPort))
 
     def send(self, msg):
         self.command_sock.sendall(msg.encode('utf-8'))
 
     def recv(self):
         print(colored(self.command_sock.recv(RECV_SIZE).decode('utf-8'), 'red'))
+    
+    def recv_file(self, fileName):
+        if os.path.isfile(os.path.join('./', fileName)):
+            os.remove(os.path.join('./', fileName))
+        
+        file = open(os.path.join('./', fileName), 'w+')
+
+        recv_data = self.data_sock.recv(RECV_SIZE).decode('utf-8')
+        file.write(recv_data)
+        file.close()
 
     def User(self, user_name):
         self.send('USER {}'.format(user_name))
@@ -58,12 +70,25 @@ class Client:
     def List(self):
         self.send('LIST')
         self.recv()
+        self.recv_file('LIST')
 
     def Cwd(self, path):
+        print('sending ', 'CWD {}'.format(path))
         self.send('CWD {}'.format(path))
         self.recv()
 
+    def Dl(self, file):
+        self.send('DL {}'.format(file))
+        self.recv_file(file)
+        self.recv()
     
+    def Help(self):
+        self.send('HELP')
+        self.recv()
+    
+    def Quit(self):
+        self.send('QUIT')
+        self.recv()
 
 
 
@@ -71,6 +96,7 @@ if __name__ == "__main__":
     # READ CONFIGS
     configs = read_configs()
     commandChannelPort = configs['commandChannelPort']
+    dataChannelPort = configs['dataChannelPort']
 
     #CREATE CLIENT
     client = Client()
@@ -106,9 +132,19 @@ if __name__ == "__main__":
                 client.Rmd(command[1])
         elif command[0].lower() == 'list':
             client.List()
-        elif command[0].loser() == 'cwd':
-            client.Cwd(command[1])
-
+        elif command[0].lower() == 'cwd':
+            if len(command) == 1:
+                client.Cwd("")
+            else:
+                client.Cwd(command[1])
+        elif command[0].lower() == 'dl':
+            if len(command) > 1:
+                client.Dl(command[1])
+        elif command[0].lower() == 'help':
+            client.Help()
+        elif command[0].lower() == 'quit':
+            client.Quit()
+            
 
         else:
             # client.Mkd(command[1])
