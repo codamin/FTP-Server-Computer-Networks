@@ -71,11 +71,11 @@ class ClientThread(Thread):
                 self.send([LOG_IN_FALED_MSG])
             else:
                 self.session_user = user
-                self.handle_log("user " + self.session_user.user_name + " logged in successfully")
+                self.handle_log("logged in successfully")
                 self.send([LOG_IN_OKAY_MSG])
         
         elif command == 'PWD':
-            self.handle_log('responded pwd request for user: ' + self.session_user.user_name)
+            self.handle_log(PWD_OKAY_MSG)
             self.send([PWD_OKAY, self.session_user.dir])
         
         elif command == 'MKD':
@@ -102,13 +102,13 @@ class ClientThread(Thread):
     def handle_log(self, msg):
         if server.logging_enable:
             file = open(server.logging_path, 'a')
-            msg = str(datetime.datetime.today()) + '  ---  ' + msg + '\n'
+            msg = str(datetime.datetime.today()) + ' for user: ' + self.session_user.user_name + '  ---  ' + msg + '\n'
             file.write(msg)
             file.close()
 
     def handle_quit(self):
         self.send([QUIT_OKAY, QUIT_OKAY_MSG])
-        self.handle_log(self.session_user.user_name + "quit")
+        self.handle_log("quited")
         sys.exit()
      
     def handle_help(self):
@@ -120,13 +120,13 @@ class ClientThread(Thread):
 
         if server.authorization_enable and server.is_admin_file(path):
             if not server.is_admin(self.session_user.user_name):
-                self.handle_log('admin file was not available to user')
-                self.send([NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG])
+                self.handle_log(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
+                self.send(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
                 return
 
         if not os.path.isfile(path):
-            self.handle_log('requestetd file does not exist')
-            self.send(['requestetd file does not exist'])
+            self.handle_log(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
+            self.send(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
             return
 
         file = open(path, 'r')
@@ -136,12 +136,21 @@ class ClientThread(Thread):
         else:
             self.handle_log("file: " + path + " was sent to user")
             self.session_user.size = str(int(self.session_user.size) - len(info))
-            # self.send_mail()
+            if int(self.session_user.size) < server.accounting_threshold:
+                self.handle_log('user remaining size is below threshold')
+                if self.session_user.alert:
+                    self.handle_log('sending capacity email to user')
+                    self.send_mail()
+                else:
+                    self.handle_log('user alert is not enable so not sending email.')                    
+
             self.send([LIST_OKAY, DL_OKAY_MSG])
             self.send_file(info)
+            server.print_users()
     
     def send_mail(self):
-        send = lambda msg: mail_socket.sendall(('msg' + '\r\n').encode())
+        print('sending mail...')
+        send = lambda msg: mail_socket.sendall((msg + '\r\n').encode())
         recv = lambda : print(mail_socket.recv(1024).decode())
         
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as mail_socket:
@@ -163,14 +172,16 @@ class ClientThread(Thread):
             send('mail from: <aminasadi329@ut.ac.ir>')
             recv()
 
-            send('rcpt to: <aminasadi329@ymail.com>')
+            print('sending to: ' + 'rcpt to: <{}>'.format(self.session_user.email))
+            send('rcpt to: <{}>'.format(self.session_user.email))
             recv()
 
             send('data')
             recv()
 
             send('subject: low capacity in ftp server')
-            send('Hi! your capacity is lower than threashold')
+            send('Hi! your capacity is below threshold.\nYour remaining capacity is {}'.format(
+                server.accounting_threshold, self.session_user.size))
             send('.')
             recv()
             
@@ -200,17 +211,22 @@ class ClientThread(Thread):
         elif '-f' in param:
             param.remove('-f')
             path = os.path.join(self.session_user.dir, param[0])
-            try:
+
+            if not os.path.isdir(path):
+                self.send()
+                self.handle_log(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
+            else:
                 os.rmdir(path)
                 self.handle_log(path + " folder remove")
                 self.send([RMD_OKAY, path, RMD_PATH_DELETED])
-            except:
-                self.send("provided path is not a dir")
-                self.handle_log("provided path is not a dir")
         else:
-            os.remove(path)
-            self.handle_log(path + " file remove")
-            self.send([RMD_OKAY, path, RMD_PATH_DELETED])
+            if not os.path.isfile(path):
+                self.send(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
+                self.handle_log(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
+            else:
+                os.remove(path)
+                self.handle_log(path + " file remove")
+                self.send([RMD_OKAY, path, RMD_PATH_DELETED])
 
     def handle_mkd(self, param):
         path = os.path.join(self.session_user.dir, param[0])

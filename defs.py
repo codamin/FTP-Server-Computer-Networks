@@ -7,6 +7,7 @@ RECV_SIZE = 1024
 NAME_OKAY_MSG = '331 User name okay, need password.'
 BAD_SEQUENCE_MSG = '503 Bad sequence of commands.'
 LOG_IN_OKAY_MSG = '230 User logged in, proceed.'
+PWD_OKAY_MSG = 'PWD responded'
 LOG_IN_FALED_MSG = '430 Invalid username or password.'
 MKD_PATH_CREATED = 'path created.'
 RMD_PATH_DELETED = 'path deleted.'
@@ -15,8 +16,7 @@ CWD_OKAY_MSG = "250 Successful Change."
 DL_OKAY_MSG = "Successful Download."
 QUIT_OKAY_MSG = "Successful Quit."
 OPEN_CONN_MSG = "Can't open data connection."
-NOT_AVAILABLE_MSG = "File not available."
-
+NOT_AVAILABLE_MSG = "Requested action not taken.File unavailable."
 
 #RESPONSE CODES
 NAME_OKAY_CODE = '331'

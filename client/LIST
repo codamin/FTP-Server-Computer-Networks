@@ -1,9 +1,3 @@
-dlFiles
-logs.log
-config.json
-user.py
-__pycache__
-file1
-server.py
-.gitignore
-tmp.py
+file6
+file3
+file2

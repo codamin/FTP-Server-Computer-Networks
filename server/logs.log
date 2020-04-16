@@ -1,30 +1,15 @@
-2020-04-16 12:16:59.626157  ---  user amin logged in successfully
-2020-04-16 12:33:27.892241  ---  user amin logged in successfully
-2020-04-16 12:33:29.985781  ---  responded pwd request for user: amin
-2020-04-16 12:34:25.810145  ---  /home/amin/university/cn/server/dlFiles/file3file download
-2020-04-16 12:37:43.253398  ---  user amin logged in successfully
-2020-04-16 12:37:46.373609  ---  responded pwd request for user: amin
-2020-04-16 12:37:57.822821  ---  /home/amin/university/cn/server/dlFiles/file3file download
-2020-04-16 12:38:30.915519  ---  /home/amin/university/cn/server/dlFiles/file2file download
-2020-04-16 12:38:43.645949  ---  requestetd path does not exist
-2020-04-16 12:43:05.363881  ---  user amin logged in successfully
-2020-04-16 12:43:32.331132  ---  /home/amin/university/cn/server/file1file download
-2020-04-16 12:46:48.151356  ---  user amin logged in successfully
-2020-04-16 12:47:07.514821  ---  /home/amin/university/cn/server/file1file download
-2020-04-16 12:47:59.650971  ---  requestetd file does not exist
-2020-04-16 12:48:02.822623  ---  responded pwd request for user: amin
-2020-04-16 12:53:51.244483  ---  requestetd file does not exist
-2020-04-16 12:54:03.462708  ---  /home/amin/university/cn/server/logs.logfile download
-2020-04-16 12:54:28.717254  ---  requestetd file does not exist
-2020-04-16 12:55:32.335580  ---  /home/amin/university/cn/server/dlFiles/file5 file create
-2020-04-16 12:55:46.971348  ---  /home/amin/university/cn/server/dlFiles/dirtest folder create
-2020-04-16 12:57:01.367261  ---  responded pwd request for user: amin
-2020-04-16 12:58:35.614330  ---  /home/amin/university/cn/server/dlFiles/dirtest folder remove
-2020-04-16 13:06:54.357924  ---  user amin logged in successfully
-2020-04-16 13:07:07.106544  ---  /home/amin/university/cn/server/dlFiles/file5is not a directory
-2020-04-16 13:12:06.357739  ---  user amin logged in successfully
-2020-04-16 13:12:15.877926  ---  responded pwd request for user: amin
-2020-04-16 13:12:33.794209  ---  /home/amin/university/cn/server/dlFiles/fis not a directory
-2020-04-16 13:19:58.779572  ---  user amin logged in successfully
-2020-04-16 13:20:01.057039  ---  responded pwd request for user: amin
-2020-04-16 13:20:10.022563  ---  responded pwd request for user: amin
+2020-04-16 14:03:06.589006 for user: amin  ---  logged in successfully
+2020-04-16 14:03:13.992159 for user: amin  ---  file: /home/amin/university/cn/server/dlFiles/file2 was sent to user
+2020-04-16 14:21:34.551968 for user: amin  ---  logged in successfully
+2020-04-16 14:21:53.848823 for user: amin  ---  file: /home/amin/university/cn/server/dlFiles/file2 was sent to user
+2020-04-16 14:23:54.957292 for user: amin  ---  logged in successfully
+2020-04-16 14:24:32.376085 for user: amin  ---  file: /home/amin/university/cn/server/dlFiles/file2 was sent to user
+2020-04-16 14:27:58.291278 for user: amin  ---  logged in successfully
+2020-04-16 14:28:17.859815 for user: amin  ---  file: /home/amin/university/cn/server/dlFiles/file3 was sent to user
+2020-04-16 14:32:03.026345 for user: amin  ---  logged in successfully
+2020-04-16 14:32:27.841858 for user: amin  ---  logged in successfully
+2020-04-16 14:32:37.334092 for user: amin  ---  file: /home/amin/university/cn/server/dlFiles/file2 was sent to user
+2020-04-16 14:35:33.144998 for user: amin  ---  logged in successfully
+2020-04-16 14:35:42.438123 for user: amin  ---  file: /home/amin/university/cn/server/dlFiles/file2 was sent to user
+2020-04-16 14:35:42.438340 for user: amin  ---  user remaining size is below threshold
+2020-04-16 14:35:42.438454 for user: amin  ---  user alert is not enable so not sending email.

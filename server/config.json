@@ -21,17 +21,17 @@
   ],
   "accounting": {
     "enable": true,
-    "threshold": 100,
+    "threshold": 29,
     "users": [
       {
         "user": "amin",
-        "size": "12000",
-        "email": "navid@akbari.com",
-        "alert": true
+        "size": "30",
+        "email": "aminasadi329@ymail.com",
+        "alert": false
       },
       {
         "user": "hoenza",
-        "size": "150000000",
+        "size": "15",
         "email": "farzad@ahabibi.com",
         "alert": false
       }
