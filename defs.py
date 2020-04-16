@@ -15,6 +15,7 @@ CWD_OKAY_MSG = "250 Successful Change."
 DL_OKAY_MSG = "Successful Download."
 QUIT_OKAY_MSG = "Successful Quit."
 OPEN_CONN_MSG = "Can't open data connection."
+NOT_AVAILABLE_MSG = "File not available."
 
 
 #RESPONSE CODES
@@ -28,6 +29,7 @@ LIST_OKAY = '226'
 HELP_OKAY = '214'
 QUIT_OKAY = '221'
 OPEN_CONN_FAIL = '425'
+NOT_AVAILABLE_CODE = '550'
 
 
 PATH = 'path'

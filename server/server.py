@@ -23,6 +23,8 @@ class ClientThread(Thread):
         self.socket_data = socket_data
         self.user_name = ""
         self.session_user = None
+        self.mail_server_user_name = 'YW1pbmFzYWRpMzI5\r\n'.encode()
+        self.mail_server_password = 'VXRhbWluMzI5'.encode()
 
     def send(self, msg):
         message = " ".join(msg)
@@ -35,10 +37,8 @@ class ClientThread(Thread):
     def run(self):
         while True:
             data = self.socket_command.recv(1024).decode('utf-8')
-
             if not data:
                 break
-
             command = ''
             param = []
             tmp = data.split(' ')
@@ -52,7 +52,7 @@ class ClientThread(Thread):
 
     def handle_commands(self, command, param):
         global server
-        print('handle calling', command, param)
+
         if command == 'USER':
             if len(param) < 1:
                 return
@@ -71,10 +71,11 @@ class ClientThread(Thread):
                 self.send([LOG_IN_FALED_MSG])
             else:
                 self.session_user = user
-                self.handle_log(self.session_user.user_name + "log in")
+                self.handle_log("user " + self.session_user.user_name + " logged in successfully")
                 self.send([LOG_IN_OKAY_MSG])
         
         elif command == 'PWD':
+            self.handle_log('responded pwd request for user: ' + self.session_user.user_name)
             self.send([PWD_OKAY, self.session_user.dir])
         
         elif command == 'MKD':
@@ -116,19 +117,63 @@ class ClientThread(Thread):
     
     def handle_dl(self, param):
         path = os.path.join(self.session_user.dir, param[0])
+
+        if server.authorization_enable and server.is_admin_file(path):
+            if not server.is_admin(self.session_user.user_name):
+                self.handle_log('admin file was not available to user')
+                self.send([NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG])
+                return
+
         if not os.path.isfile(path):
-            self.send(['file is not present'])
+            self.handle_log('requestetd file does not exist')
+            self.send(['requestetd file does not exist'])
             return
+
         file = open(path, 'r')
         info = file.read()
-        if len(info) > self.session_user.size:
+        if len(info) > int(self.session_user.size):
             self.send([OPEN_CONN_FAIL, OPEN_CONN_MSG])
         else:
-            self.handle_log(path + "file download")
-            self.session_user.size -= len(info)
+            self.handle_log("file: " + path + " was sent to user")
+            self.session_user.size = str(int(self.session_user.size) - len(info))
+            # self.send_mail()
             self.send([LIST_OKAY, DL_OKAY_MSG])
             self.send_file(info)
+    
+    def send_mail(self):
+        send = lambda msg: mail_socket.sendall(('msg' + '\r\n').encode())
+        recv = lambda : print(mail_socket.recv(1024).decode())
+        
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as mail_socket:
+            mail_socket.connect(('mail.ut.ac.ir', 25))
+            recv()
+            
+            send('helo FtpServer')
+            recv()
 
+            send('auth login')
+            recv()
+            
+            send('YW1pbmFzYWRpMzI5')
+            recv()
+
+            send('VXRhbWluMzI5')
+            recv()
+
+            send('mail from: <aminasadi329@ut.ac.ir>')
+            recv()
+
+            send('rcpt to: <aminasadi329@ymail.com>')
+            recv()
+
+            send('data')
+            recv()
+
+            send('subject: low capacity in ftp server')
+            send('Hi! your capacity is lower than threashold')
+            send('.')
+            recv()
+            
     def handle_cwd(self, param):
         if len(param) == 0:
             self.session_user.dir = os.getcwd()
@@ -155,9 +200,13 @@ class ClientThread(Thread):
         elif '-f' in param:
             param.remove('-f')
             path = os.path.join(self.session_user.dir, param[0])
-            os.rmdir(path)
-            self.handle_log(path + " folder remove")
-            self.send([RMD_OKAY, path, RMD_PATH_DELETED])
+            try:
+                os.rmdir(path)
+                self.handle_log(path + " folder remove")
+                self.send([RMD_OKAY, path, RMD_PATH_DELETED])
+            except:
+                self.send("provided path is not a dir")
+                self.handle_log("provided path is not a dir")
         else:
             os.remove(path)
             self.handle_log(path + " file remove")
@@ -187,6 +236,7 @@ class Server:
         self.init_users(configs['users'])
         self.init_accounting(configs['accounting'])
         self.init_logging(configs['logging'])
+        self.init_authorization(configs['authorization'])
 
     def init_users(self, users):
         self.users = []
@@ -203,6 +253,11 @@ class Server:
                     user.size = accounting_user['size']
                     user.email = accounting_user['email']
                     user.alert = accounting_user['alert']
+
+    def init_authorization(self, authorization):
+        self.admins = authorization['admins']
+        self.admin_files = authorization['files']
+        self.authorization_enable = ['authorization.enable']
     
     def init_logging(self, logging):
         self.logging_enable = logging['enable']
@@ -212,7 +267,13 @@ class Server:
         for user in self.users:
             user.print()
             print('#############')
-    
+
+    def is_admin_file(self, path):
+        return path in self.admin_files
+
+    def is_admin(self, user_name):
+        return user_name in self.admins
+            
     def run(self):
         listen_command_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         listen_command_socket.bind((HOST_IP, self.command_port))
@@ -227,8 +288,6 @@ class Server:
             sock_data, addr2 = listen_data_socket.accept()
             newThread = ClientThread(sock_command, sock_data)
             newThread.start()
-
-
 
     def get_user(self, user_name):
         for user in self.users:

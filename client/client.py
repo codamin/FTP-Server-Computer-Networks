@@ -28,10 +28,8 @@ class Client:
     def recv(self):
         resp = self.command_sock.recv(RECV_SIZE).decode('utf-8')
         print(colored(resp, 'red'))
-        if resp.startswith(OPEN_CONN_FAIL):
-            return False
-        return True
-        
+        return(resp)
+
     def recv_file(self, fileName):
         if os.path.isfile(os.path.join('./', fileName)):
             os.remove(os.path.join('./', fileName))
@@ -59,7 +57,7 @@ class Client:
         self.recv()
     
     def Mkdi(self, name):
-        print('sendin MKD -i {}'.format(name))
+        print('sending MKD -i {}'.format(name))
         self.send('MKD -i {}'.format(name))
         self.recv()
     
@@ -84,7 +82,7 @@ class Client:
     def Dl(self, file):
         self.send('DL {}'.format(file))
         res = self.recv()
-        if res:
+        if res[:3] == '226':
             self.recv_file(file)
     
     def Help(self):
@@ -149,8 +147,5 @@ if __name__ == "__main__":
             client.Help()
         elif command[0].lower() == 'quit':
             client.Quit()
-
-
         else:
-            # client.Mkd(command[1])
             client.send(command1)
