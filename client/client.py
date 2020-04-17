@@ -75,7 +75,6 @@ class Client:
         self.recv_file('LIST')
 
     def Cwd(self, path):
-        print('sending ', 'CWD {}'.format(path))
         self.send('CWD {}'.format(path))
         self.recv()
 
@@ -104,20 +103,20 @@ if __name__ == "__main__":
     #CREATE CLIENT
     client = Client()
     client.connectToServer()
-    client.User('amin')
-    client.Pass('329')
+    # client.User('amin')
+    # client.Pass('329')
     
     # COMMANDS
     while(True):
         command1 = input('ENTER COMMAND: ')
         command = command1.split()
-        if command[0].lower() == 'user':
+        if command[0] == 'USER':
             client.User(command[1])
-        elif command[0].lower() == 'pass':
+        elif command[0] == 'PASS':
             client.Pass(command[1])
-        elif command[0].lower() == 'pwd':
+        elif command[0] == 'PWD':
             client.Pwd()
-        elif command[0].lower() == 'mkd':
+        elif command[0] == 'MKD':
             if len(command) == 3:
                 if command[1] != '-i':
                     client.Mkdi(command[1])
@@ -125,7 +124,7 @@ if __name__ == "__main__":
                     client.Mkdi(command[2])
             else:
                 client.Mkd(command[1])
-        elif command[0].lower() == 'rmd':
+        elif command[0] == 'RMD':
             if len(command) == 3:
                 if command[1] != '-f':
                     client.Rmdf(command[1])
@@ -133,19 +132,20 @@ if __name__ == "__main__":
                     client.Rmdf(command[2])
             else:
                 client.Rmd(command[1])
-        elif command[0].lower() == 'list':
+        elif command[0] == 'LIST':
             client.List()
-        elif command[0].lower() == 'cwd':
+        elif command[0] == 'CWD':
             if len(command) == 1:
                 client.Cwd("")
             else:
                 client.Cwd(command[1])
-        elif command[0].lower() == 'dl':
+        elif command[0] == 'DL':
             if len(command) > 1:
                 client.Dl(command[1])
-        elif command[0].lower() == 'help':
+        elif command[0] == 'HELP':
             client.Help()
-        elif command[0].lower() == 'quit':
+        elif command[0] == 'QUIT':
             client.Quit()
         else:
             client.send(command1)
+            client.recv()

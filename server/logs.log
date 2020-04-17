@@ -13,3 +13,75 @@
 2020-04-16 14:35:42.438123 for user: amin  ---  file: /home/amin/university/cn/server/dlFiles/file2 was sent to user
 2020-04-16 14:35:42.438340 for user: amin  ---  user remaining size is below threshold
 2020-04-16 14:35:42.438454 for user: amin  ---  user alert is not enable so not sending email.
+2020-04-17 02:47:46.432333 for user: amin  ---  logged in successfully
+2020-04-17 02:48:41.785612 for user: amin  ---  logged in successfully
+2020-04-17 02:49:08.896852 for user: amin  ---  PWD responded
+2020-04-17 02:49:15.946186 for user: amin  ---  PWD responded
+2020-04-17 02:49:54.316735 for user: amin  ---  logged in successfully
+2020-04-17 02:49:56.347079 for user: amin  ---  PWD responded
+2020-04-17 02:50:01.458440 for user: amin  ---  PWD responded
+2020-04-17 02:52:00.805061 for user: amin  ---  logged in successfully
+2020-04-17 02:52:18.850106 for user: amin  ---  PWD responded
+2020-04-17 02:54:24.812421 for user: amin  ---  PWD responded
+2020-04-17 02:54:46.629720 for user: amin  ---  logged in successfully
+2020-04-17 02:54:48.428225 for user: amin  ---  PWD responded
+2020-04-17 02:54:53.097605 for user: amin  ---  PWD responded
+2020-04-17 03:02:43.721992 for user: amin  ---  logged in successfully
+2020-04-17 03:02:46.676123 for user: amin  ---  PWD responded
+2020-04-17 03:02:51.001348 for user: amin  ---  PWD responded
+2020-04-17 03:02:55.763829 for user: amin  ---  PWD responded
+2020-04-17 03:16:56.311544 for user: amin  ---  logged in successfully
+2020-04-17 03:16:58.872902 for user: amin  ---  PWD responded
+2020-04-17 03:17:01.027889 for user: amin  ---  PWD responded
+2020-04-17 03:24:11.018292 for user: hoenza  ---  logged in successfully
+2020-04-17 03:24:16.272811 for user: hoenza  ---  PWD responded
+2020-04-17 03:24:21.499562 for user: hoenza  ---  PWD responded
+2020-04-17 03:24:27.980976 for user: hoenza  ---  PWD responded
+2020-04-17 03:24:32.976291 for user: hoenza  ---  PWD responded
+2020-04-17 03:24:33.843504 for user: hoenza  ---  PWD responded
+2020-04-17 03:24:51.745704 for user: hoenza  ---  /home/ho/cn/ftp-server/server/file1 file create
+2020-04-17 03:24:56.283849 for user: hoenza  ---  /home/ho/cn/ftp-server/server/fold1 folder create
+2020-04-17 03:25:05.893412 for user: hoenza  ---  /home/ho/cn/ftp-server/server/fold1 folder remove
+2020-04-17 03:25:10.519744 for user: hoenza  ---  /home/ho/cn/ftp-server/server/file1 file remove
+2020-04-17 03:44:03.942569 for user: hoenza  ---  logged in successfully
+2020-04-17 03:44:26.614634 for user: hoenza  ---  PWD responded
+2020-04-17 03:44:54.473127 for user: hoenza  ---  /home/ho/cn/ftp-server/server/file1 file create
+2020-04-17 03:44:59.788698 for user: hoenza  ---  /home/ho/cn/ftp-server/server/fold1 folder create
+2020-04-17 03:45:07.971476 for user: hoenza  ---  /home/ho/cn/ftp-server/server/file2 file create
+2020-04-17 03:45:11.791045 for user: hoenza  ---  /home/ho/cn/ftp-server/server/fold2 folder create
+2020-04-17 03:45:41.195475 for user: hoenza  ---  /home/ho/cn/ftp-server/server/file1 file remove
+2020-04-17 03:45:51.681653 for user: hoenza  ---  550 Requested action not taken.File unavailable.
+2020-04-17 03:48:10.258390 for user: hoenza  ---  logged in successfully
+2020-04-17 03:48:16.815048 for user: hoenza  ---  550 Requested action not taken.File unavailable.
+2020-04-17 03:48:20.917924 for user: hoenza  ---  /home/ho/cn/ftp-server/server/file2 file remove
+2020-04-17 03:48:27.512810 for user: hoenza  ---  550 Requested action not taken.File unavailable.
+2020-04-17 03:48:32.085977 for user: hoenza  ---  /home/ho/cn/ftp-server/server/fold1 folder remove
+2020-04-17 03:48:44.530575 for user: hoenza  ---  PWD responded
+2020-04-17 03:49:50.179835 for user: hoenza  ---  logged in successfully
+2020-04-17 03:49:54.507716 for user: hoenza  ---  PWD responded
+2020-04-17 03:51:38.681474 for user: hoenza  ---  logged in successfully
+2020-04-17 03:52:06.607120 for user: hoenza  ---  PWD responded
+2020-04-17 03:52:10.879064 for user: hoenza  ---  PWD responded
+2020-04-17 03:52:19.252348 for user: hoenza  ---  PWD responded
+2020-04-17 03:52:26.996249 for user: hoenza  ---  PWD responded
+2020-04-17 03:52:56.037763 for user: hoenza  ---  logged in successfully
+2020-04-17 03:53:43.056701 for user: hoenza  ---  PWD responded
+2020-04-17 03:53:48.281110 for user: hoenza  ---  PWD responded
+2020-04-17 03:55:34.663628 for user: hoenza  ---  logged in successfully
+2020-04-17 03:55:36.286117 for user: hoenza  ---  PWD responded
+2020-04-17 03:55:39.250491 for user: hoenza  ---  PWD responded
+2020-04-17 03:55:42.536380 for user: hoenza  ---  PWD responded
+2020-04-17 03:56:16.575666 for user: hoenza  ---  logged in successfully
+2020-04-17 03:56:19.239132 for user: hoenza  ---  PWD responded
+2020-04-17 03:56:22.567876 for user: hoenza  ---  PWD responded
+2020-04-17 03:56:25.422307 for user: hoenza  ---  PWD responded
+2020-04-17 03:56:32.105821 for user: hoenza  ---  PWD responded
+2020-04-17 03:57:27.615144 for user: hoenza  ---  PWD responded
+2020-04-17 03:57:44.852975 for user: hoenza  ---  PWD responded
+2020-04-17 04:00:07.310549 for user: hoenza  ---  logged in successfully
+2020-04-17 04:00:09.424124 for user: hoenza  ---  PWD responded
+2020-04-17 04:26:03.019199 for user: hoenza  ---  logged in successfully
+2020-04-17 04:26:14.244569 for user: hoenza  ---  PWD responded
+2020-04-17 04:27:18.500430 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/dlf was sent to user
+2020-04-17 04:27:32.014606 for user: hoenza  ---  550 Requested action not taken.File unavailable.
+2020-04-17 04:27:38.316380 for user: hoenza  ---  quited

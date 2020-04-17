@@ -55,7 +55,9 @@ class ClientThread(Thread):
 
         if command == 'USER':
             if len(param) < 1:
+                self.send([ERR, ERR_MSG])
                 return
+            
             user = server.get_user(param[0])
             if user:
                 self.user_name = user.user_name
@@ -65,6 +67,10 @@ class ClientThread(Thread):
         
         elif command == 'PASS':
             user = server.get_user(self.user_name)
+            if len(param) < 1:
+                self.send([ERR, ERR_MSG])
+                return
+            
             if not self.user_name:
                 self.send([BAD_SEQUENCE_MSG])
             elif user.password != param[0]:
@@ -75,29 +81,64 @@ class ClientThread(Thread):
                 self.send([LOG_IN_OKAY_MSG])
         
         elif command == 'PWD':
+            if self.session_user == None:
+                self.send([LOGIN_NEEDED, LOGIN_NEEDED_MSG])
+                return
+
             self.handle_log(PWD_OKAY_MSG)
             self.send([PWD_OKAY, self.session_user.dir])
         
         elif command == 'MKD':
+            if self.session_user == None:
+                self.send([LOGIN_NEEDED, LOGIN_NEEDED_MSG])
+                return
+
             self.handle_mkd(param)
         
         elif command == 'RMD':
+            if self.session_user == None:
+                self.send([LOGIN_NEEDED, LOGIN_NEEDED_MSG])
+                return
+
             self.handle_rmd(param)
 
         elif command == 'LIST':
+            if self.session_user == None:
+                self.send([LOGIN_NEEDED, LOGIN_NEEDED_MSG])
+                return
+
             self.handle_list()
 
         elif command == 'CWD':
+            if self.session_user == None:
+                self.send([LOGIN_NEEDED, LOGIN_NEEDED_MSG])
+                return
+
             self.handle_cwd(param)
 
         elif command == 'DL':
+            if self.session_user == None:
+                self.send([LOGIN_NEEDED, LOGIN_NEEDED_MSG])
+                return
+
             self.handle_dl(param)
         
         elif command == 'HELP':
+            if self.session_user == None:
+                self.send([LOGIN_NEEDED, LOGIN_NEEDED_MSG])
+                return
+
             self.handle_help()
         
         elif command == 'QUIT':
+            if self.session_user == None:
+                self.send([LOGIN_NEEDED, LOGIN_NEEDED_MSG])
+                return
+
             self.handle_quit()
+
+        else:
+            self.send([SYN_ERR, SYN_ERR_MSG])
 
     def handle_log(self, msg):
         if server.logging_enable:
@@ -113,6 +154,15 @@ class ClientThread(Thread):
      
     def handle_help(self):
         resp = "\nUSER [name], It's argument is used to specify the user's string. It is used for user authentication.\n"
+        resp += "PASS [password], It's argument is used to specity the password on given user's string in the last USER call.\n"
+        resp += "PWD, This command gives the current directory of the user to the user.\n"
+        resp += "MKD -i [name], This command creates a file with given name as argument with -i flag, and creates folder respcetively without -i flag.\n"
+        resp += "RMD -f [name], This command removes a directory with -f flag and a file with the given name.\n"
+        resp += "LIST, This command gives us the list of the files and folders in the current directory of user as a downloaded file with name LIST.\n"
+        resp += "CWD [path], This command changes the directory of the user.\n"
+        resp += "DL [name], This command downloads a file with the given name as argument.\n"
+        resp += "HELP, This command shows the user the help details that are prepared before.\n"
+        resp += "QUIT, This command logs out the user from the its user account.\n"
         self.send([HELP_OKAY, resp])
     
     def handle_dl(self, param):
@@ -121,12 +171,12 @@ class ClientThread(Thread):
         if server.authorization_enable and server.is_admin_file(path):
             if not server.is_admin(self.session_user.user_name):
                 self.handle_log(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
-                self.send(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
+                self.send([NOT_AVAILABLE_CODE, NOT_AVAILABLE_MSG])
                 return
 
         if not os.path.isfile(path):
             self.handle_log(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
-            self.send(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
+            self.send([NOT_AVAILABLE_CODE, NOT_AVAILABLE_MSG])
             return
 
         file = open(path, 'r')
@@ -188,14 +238,22 @@ class ClientThread(Thread):
     def handle_cwd(self, param):
         if len(param) == 0:
             self.session_user.dir = os.getcwd()
+            self.send([CWD_OKAY_MSG])
         elif param[0] == '..':
+            if len(self.session_user.dir) > 0 and self.session_user.dir[-1] == '/':
+                self.session_user.dir = self.session_user.dir[:-1]
             head, tail = os.path.split(self.session_user.dir)
             if head[-1] == '/':
                 head = head[:-1]
             self.session_user.dir = head
+            self.send([CWD_OKAY_MSG])
         else:
-            self.session_user.dir = os.path.join(self.session_user.dir, param[0])
-        self.send([CWD_OKAY_MSG])
+            new_path = os.path.join(self.session_user.dir, param[0])
+            if os.path.isdir(new_path):
+                self.session_user.dir = new_path
+                self.send([CWD_OKAY_MSG])
+            else:
+                self.send([ERR, ERR_MSG])
 
     def handle_list(self):
         dir_list = os.listdir(self.session_user.dir)
@@ -204,16 +262,17 @@ class ClientThread(Thread):
         self.send([LIST_OKAY, LIST_DONE])
 
     def handle_rmd(self, param):
-        path = os.path.join(self.session_user.dir, param[0])
-
         if len(param) < 1:
-            pass
-        elif '-f' in param:
+            self.send([ERR, ERR_MSG])
+            return
+
+        path = os.path.join(self.session_user.dir, param[0])        
+        if '-f' in param:
             param.remove('-f')
             path = os.path.join(self.session_user.dir, param[0])
 
             if not os.path.isdir(path):
-                self.send()
+                self.send([NOT_AVAILABLE_CODE, NOT_AVAILABLE_MSG])
                 self.handle_log(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
             else:
                 os.rmdir(path)
@@ -221,7 +280,7 @@ class ClientThread(Thread):
                 self.send([RMD_OKAY, path, RMD_PATH_DELETED])
         else:
             if not os.path.isfile(path):
-                self.send(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
+                self.send([NOT_AVAILABLE_CODE, NOT_AVAILABLE_MSG])
                 self.handle_log(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
             else:
                 os.remove(path)
@@ -235,13 +294,19 @@ class ClientThread(Thread):
         elif '-i' in param:
             param.remove('-i')
             path = os.path.join(self.session_user.dir, param[0])
-            self.handle_log(path + " file create")
-            open(path, 'w+').close()
-            self.send([PWD_OKAY, path, MKD_PATH_CREATED])
+            try:
+                open(path, 'w+').close()
+                self.handle_log(path + " file create")
+                self.send([PWD_OKAY, path, MKD_PATH_CREATED])
+            except:
+                self.send([ERR, ERR_MSG])
         else:
-            self.handle_log(path + " folder create")
-            os.makedirs(path)
-            self.send([PWD_OKAY, path, MKD_PATH_CREATED])
+            try:
+                os.makedirs(path)
+                self.handle_log(path + " folder create")
+                self.send([PWD_OKAY, path, MKD_PATH_CREATED])
+            except:
+                self.send([ERR, ERR_MSG])
 
 
 class Server:

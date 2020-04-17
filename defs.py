@@ -17,6 +17,9 @@ DL_OKAY_MSG = "Successful Download."
 QUIT_OKAY_MSG = "Successful Quit."
 OPEN_CONN_MSG = "Can't open data connection."
 NOT_AVAILABLE_MSG = "Requested action not taken.File unavailable."
+LOGIN_NEEDED_MSG = "Need account for login."
+SYN_ERR_MSG = "Syntax error in parameters or arguments."
+ERR_MSG = "Error."
 
 #RESPONSE CODES
 NAME_OKAY_CODE = '331'
@@ -30,6 +33,9 @@ HELP_OKAY = '214'
 QUIT_OKAY = '221'
 OPEN_CONN_FAIL = '425'
 NOT_AVAILABLE_CODE = '550'
+LOGIN_NEEDED = '332'
+SYN_ERR = '501'
+ERR = '500'
 
 
 PATH = 'path'
