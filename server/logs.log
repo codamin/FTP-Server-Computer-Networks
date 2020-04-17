@@ -122,3 +122,85 @@
 2020-04-17 17:21:26.234251 for user: amin  ---  550 file or directory not found
 2020-04-17 17:22:30.228433 for user: hoenza  ---  logged in successfully
 2020-04-17 17:23:02.198893 for user: hoenza  ---  logged in successfully
+2020-04-17 11:52:33.306805 for user: amin  ---  logged in successfully
+2020-04-17 11:52:35.713588 for user: amin  ---  PWD responded
+2020-04-17 11:53:24.888256 for user: amin  ---  logged in successfully
+2020-04-17 11:53:27.283432 for user: amin  ---  PWD responded
+2020-04-17 11:55:18.439580 for user: hoenza  ---  logged in successfully
+2020-04-17 11:55:20.212738 for user: hoenza  ---  PWD responded
+2020-04-17 12:05:57.585052 for user: hoenza  ---  logged in successfully
+2020-04-17 12:06:17.642555 for user: hoenza  ---  550 file or directory not found
+2020-04-17 12:06:23.873291 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:06:27.660437 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:06:58.149278 for user: hoenza  ---  logged in successfully
+2020-04-17 12:07:00.023684 for user: hoenza  ---  PWD responded
+2020-04-17 12:07:03.739319 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:07:03.739830 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:07:03.740189 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:07:06.994455 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:07:06.994892 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:07:06.995142 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:07:09.868168 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:07:09.868737 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:07:09.869076 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:07:12.433607 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:07:12.434104 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:07:12.434328 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:10:01.068681 for user: hoenza  ---  logged in successfully
+2020-04-17 12:10:04.118659 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:10:04.119245 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:10:04.119491 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:11:29.733113 for user: hoenza  ---  logged in successfully
+2020-04-17 12:11:42.901623 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:11:46.829252 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:11:46.829829 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:11:46.830161 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:13:49.744571 for user: hoenza  ---  logged in successfully
+2020-04-17 12:17:24.234675 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:17:30.708194 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:17:30.708495 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:17:30.708660 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:17:40.013643 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:17:40.014233 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:17:40.014573 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:17:47.955257 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:17:47.955848 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:17:47.956337 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:17:51.331373 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:17:51.332093 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:17:51.332449 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:18:47.230098 for user: hoenza  ---  logged in successfully
+2020-04-17 12:18:53.964441 for user: hoenza  ---  PWD responded
+2020-04-17 12:18:56.619109 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:19:08.707997 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:19:08.708684 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:19:08.709058 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:19:22.630721 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:19:22.631252 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:19:22.631476 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:19:26.613618 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:19:26.614123 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:19:26.614356 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:20:34.650746 for user: hoenza  ---  logged in successfully
+2020-04-17 12:20:37.587328 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:20:37.587842 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:20:37.588245 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:20:59.471071 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:20:59.471560 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:20:59.471780 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:21:15.996109 for user: hoenza  ---  550 file or directory not found
+2020-04-17 12:21:20.659813 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:21:20.660419 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:21:20.660650 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:22:10.756352 for user: hoenza  ---  logged in successfully
+2020-04-17 12:22:14.381448 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:22:14.382016 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:22:14.382262 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:22:36.241862 for user: hoenza  ---  logged in successfully
+2020-04-17 12:22:39.195641 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:22:39.196239 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:22:39.196584 for user: hoenza  ---  user alert is not enable so not sending email.
+2020-04-17 12:23:10.458705 for user: hoenza  ---  logged in successfully
+2020-04-17 12:23:13.467376 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/file.txt was sent to user
+2020-04-17 12:23:13.467899 for user: hoenza  ---  user remaining size is below threshold
+2020-04-17 12:23:13.468288 for user: hoenza  ---  user alert is not enable so not sending email.

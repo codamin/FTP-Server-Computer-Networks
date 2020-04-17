@@ -186,22 +186,20 @@ class ClientThread(Thread):
 
         file = open(path, 'r')
         info = file.read()
-
-        if len(info) > self.session_user.size:
+        if server.accounting_enable == True and len(info) > self.session_user.size:
             self.send([NOT_AVAILABLE_CODE, "not enough capacity size"])
         else:
             self.handle_log("file: " + path + " was sent to user")
             self.send([LIST_OKAY, DL_OKAY_MSG])
             self.session_user.size = self.session_user.size - len(info)
-    
             if self.session_user.size < server.accounting_threshold:
                 self.handle_log('user remaining size is below threshold')
                 if self.session_user.alert:
                     self.handle_log('sending capacity email to user')
                     self.send_mail()
                 else:
-                    self.handle_log('user alert is not enable so not sending email.')                    
-
+                    self.handle_log('user alert is not enable so not sending email.')               
+            
             self.send_file(info)
             server.print_users()
     

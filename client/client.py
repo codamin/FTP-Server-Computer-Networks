@@ -39,6 +39,11 @@ class Client:
         recv_data = self.data_sock.recv(RECV_SIZE).decode('utf-8')
         file.write(recv_data)
         file.close()
+    
+    def recv_file_render(self):
+        recv_data = self.data_sock.recv(RECV_SIZE).decode('utf-8')
+        print(colored(recv_data, 'green'))
+        return(recv_data)
 
     def User(self, user_name):
         self.send('USER {}'.format(user_name))
@@ -71,8 +76,9 @@ class Client:
     
     def List(self):
         self.send('LIST')
-        self.recv()
-        self.recv_file('LIST')
+        resp = self.recv()
+        if resp == "226 List transfer done.":
+            self.recv_file_render()
 
     def Cwd(self, path):
         self.send('CWD {}'.format(path))
