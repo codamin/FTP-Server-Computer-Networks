@@ -85,3 +85,40 @@
 2020-04-17 04:27:18.500430 for user: hoenza  ---  file: /home/ho/cn/ftp-server/server/dlf was sent to user
 2020-04-17 04:27:32.014606 for user: hoenza  ---  550 Requested action not taken.File unavailable.
 2020-04-17 04:27:38.316380 for user: hoenza  ---  quited
+2020-04-17 16:35:05.220076 for user: amin  ---  logged in successfully
+2020-04-17 16:35:07.737810 for user: amin  ---  PWD responded
+2020-04-17 16:38:58.170439 for user: amin  ---  550 Requested action not taken.File unavailable.
+2020-04-17 16:55:55.709338 for user: amin  ---  logged in successfully
+2020-04-17 16:56:19.856962 for user: amin  ---  550 do not have admin privilages
+2020-04-17 16:57:40.116525 for user: amin  ---  file: /home/amin/university/cn/server/file.txt was sent to user
+2020-04-17 16:57:40.116737 for user: amin  ---  user remaining size is below threshold
+2020-04-17 16:57:40.116885 for user: amin  ---  user alert is not enable so not sending email.
+2020-04-17 17:01:23.890426 for user: amin  ---  logged in successfully
+2020-04-17 17:01:29.179995 for user: amin  ---  550 do not have admin privilages
+2020-04-17 17:01:48.819351 for user: amin  ---  file: /home/amin/university/cn/server/file.txt was sent to user
+2020-04-17 17:01:48.819618 for user: amin  ---  user remaining size is below threshold
+2020-04-17 17:01:48.819799 for user: amin  ---  sending capacity email to user
+2020-04-17 17:05:58.686439 for user: amin  ---  logged in successfully
+2020-04-17 17:06:31.637810 for user: amin  ---  logged in successfully
+2020-04-17 17:09:03.553177 for user: amin  ---  logged in successfully
+2020-04-17 17:09:13.341699 for user: amin  ---  PWD responded
+2020-04-17 17:09:31.574351 for user: amin  ---  550 file or directory not found
+2020-04-17 17:09:42.068625 for user: amin  ---  550 do not have admin privilages
+2020-04-17 17:10:40.306469 for user: amin  ---  logged in successfully
+2020-04-17 17:11:07.469814 for user: amin  ---  file: /home/amin/university/cn/server/../Files/file5.txt was sent to user
+2020-04-17 17:11:07.470178 for user: amin  ---  user remaining size is below threshold
+2020-04-17 17:11:07.470336 for user: amin  ---  sending capacity email to user
+2020-04-17 17:12:50.163357 for user: amin  ---  logged in successfully
+2020-04-17 17:13:11.500097 for user: amin  ---  file: /home/amin/university/cn/server/../Files/file5.txt was sent to user
+2020-04-17 17:13:11.500475 for user: amin  ---  user remaining size is below threshold
+2020-04-17 17:13:11.500664 for user: amin  ---  sending capacity email to user
+2020-04-17 17:18:36.925157 for user: amin  ---  logged in successfully
+2020-04-17 17:19:10.052806 for user: amin  ---  PWD responded
+2020-04-17 17:19:16.931890 for user: amin  ---  file: /home/amin/university/cn/server/temp.py was sent to user
+2020-04-17 17:19:16.932324 for user: amin  ---  user remaining size is below threshold
+2020-04-17 17:19:16.932551 for user: amin  ---  sending capacity email to user
+2020-04-17 17:20:45.638578 for user: amin  ---  logged in successfully
+2020-04-17 17:21:13.462374 for user: amin  ---  550 do not have admin privilages
+2020-04-17 17:21:26.234251 for user: amin  ---  550 file or directory not found
+2020-04-17 17:22:30.228433 for user: hoenza  ---  logged in successfully
+2020-04-17 17:23:02.198893 for user: hoenza  ---  logged in successfully

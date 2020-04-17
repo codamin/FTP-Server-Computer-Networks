@@ -165,28 +165,36 @@ class ClientThread(Thread):
         resp += "QUIT, This command logs out the user from the its user account.\n"
         self.send([HELP_OKAY, resp])
     
-    def handle_dl(self, param):
-        path = os.path.join(self.session_user.dir, param[0])
-
+    def handle_admin(self, path):
         if server.authorization_enable and server.is_admin_file(path):
             if not server.is_admin(self.session_user.user_name):
-                self.handle_log(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
-                self.send([NOT_AVAILABLE_CODE, NOT_AVAILABLE_MSG])
-                return
+                self.handle_log(NOT_AVAILABLE_CODE + " " + "do not have admin privilages")
+                self.send([NOT_AVAILABLE_CODE, "do not have admin privilages"])
+                return False
+        return True
+
+    def handle_dl(self, param):
+        path = os.path.join(self.session_user.dir, param[0])
 
         if not os.path.isfile(path):
             self.handle_log(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
             self.send([NOT_AVAILABLE_CODE, NOT_AVAILABLE_MSG])
             return
 
+        if not self.handle_admin(path):
+            return
+
         file = open(path, 'r')
         info = file.read()
-        if len(info) > int(self.session_user.size):
-            self.send([OPEN_CONN_FAIL, OPEN_CONN_MSG])
+
+        if len(info) > self.session_user.size:
+            self.send([NOT_AVAILABLE_CODE, "not enough capacity size"])
         else:
             self.handle_log("file: " + path + " was sent to user")
-            self.session_user.size = str(int(self.session_user.size) - len(info))
-            if int(self.session_user.size) < server.accounting_threshold:
+            self.send([LIST_OKAY, DL_OKAY_MSG])
+            self.session_user.size = self.session_user.size - len(info)
+    
+            if self.session_user.size < server.accounting_threshold:
                 self.handle_log('user remaining size is below threshold')
                 if self.session_user.alert:
                     self.handle_log('sending capacity email to user')
@@ -194,7 +202,6 @@ class ClientThread(Thread):
                 else:
                     self.handle_log('user alert is not enable so not sending email.')                    
 
-            self.send([LIST_OKAY, DL_OKAY_MSG])
             self.send_file(info)
             server.print_users()
     
@@ -231,7 +238,7 @@ class ClientThread(Thread):
 
             send('subject: low capacity in ftp server')
             send('Hi! your capacity is below threshold.\nYour remaining capacity is {}'.format(
-                server.accounting_threshold, self.session_user.size))
+                str(self.session_user.size)))
             send('.')
             recv()
             
@@ -270,11 +277,13 @@ class ClientThread(Thread):
         if '-f' in param:
             param.remove('-f')
             path = os.path.join(self.session_user.dir, param[0])
-
+            
             if not os.path.isdir(path):
                 self.send([NOT_AVAILABLE_CODE, NOT_AVAILABLE_MSG])
                 self.handle_log(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
             else:
+                if not self.handle_admin(path):
+                    return
                 os.rmdir(path)
                 self.handle_log(path + " folder remove")
                 self.send([RMD_OKAY, path, RMD_PATH_DELETED])
@@ -283,6 +292,8 @@ class ClientThread(Thread):
                 self.send([NOT_AVAILABLE_CODE, NOT_AVAILABLE_MSG])
                 self.handle_log(NOT_AVAILABLE_CODE + " " + NOT_AVAILABLE_MSG)
             else:
+                if not self.handle_admin(path):
+                    return
                 os.remove(path)
                 self.handle_log(path + " file remove")
                 self.send([RMD_OKAY, path, RMD_PATH_DELETED])
@@ -331,13 +342,15 @@ class Server:
         for accounting_user in accounting['users']:
             for user in self.users:
                 if user.user_name == accounting_user['user']:
-                    user.size = accounting_user['size']
+                    user.size = int(accounting_user['size'])
                     user.email = accounting_user['email']
                     user.alert = accounting_user['alert']
 
     def init_authorization(self, authorization):
         self.admins = authorization['admins']
         self.admin_files = authorization['files']
+        for i in range(len(self.admin_files)):
+            self.admin_files[i] = os.path.abspath(self.admin_files[i])
         self.authorization_enable = ['authorization.enable']
     
     def init_logging(self, logging):
@@ -347,7 +360,7 @@ class Server:
     def print_users(self):
         for user in self.users:
             user.print()
-            print('#############')
+            print('#############################')
 
     def is_admin_file(self, path):
         return path in self.admin_files

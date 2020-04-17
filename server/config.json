@@ -21,13 +21,13 @@
   ],
   "accounting": {
     "enable": true,
-    "threshold": 29,
+    "threshold": 30,
     "users": [
       {
         "user": "amin",
-        "size": "30",
+        "size": "200",
         "email": "aminasadi329@ymail.com",
-        "alert": false
+        "alert": true
       },
       {
         "user": "hoenza",
@@ -47,8 +47,11 @@
       "farzad"
     ],
     "files": [
+      "./server.py",
+      "./user.py",
       "./config.json",
-      "./example.png"
+      "./example.png",
+      "../Files/file5.txt"
     ]
   }
 }
